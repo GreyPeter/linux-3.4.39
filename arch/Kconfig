@@ -1,5 +1,5 @@
 #
-# General architecture dependent options
+# General architecture dependent options #
 #
 
 config OPROFILE
