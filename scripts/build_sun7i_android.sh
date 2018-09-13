@@ -28,7 +28,12 @@ fi
 
 # Setup common variables
 export ARCH=arm
-export CROSS_COMPILE=arm-linux-gnueabi-
+if [[ $LICHEE_HOST_PLATFORM == 'darwin' ]]; then
+	export CROSS_COMPILE=arm-none-eabi-
+  #CROSS_COMPILE=arm-linux-gnueabihf-
+else
+	export CROSS_COMPILE=arm-linux-gnueabi-
+fi
 export AS=${CROSS_COMPILE}as
 export LD=${CROSS_COMPILE}ld
 export CC=${CROSS_COMPILE}gcc
