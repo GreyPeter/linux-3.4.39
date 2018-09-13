@@ -13,7 +13,13 @@
 
 set -e
 
-cpu_cores=`cat /proc/cpuinfo | grep "processor" | wc -l`
+cpu_cores=1
+if [[ $LICHEE_HOST_PLATFORM == 'darwin' ]]; then
+	cpu_cores=`sysctl -a | grep machdep.cpu | grep core_count | cut -d: -f2`
+else
+	cpu_cores=`cat /proc/cpuinfo | grep "processor" | wc -l`;
+fi
+
 if [ ${cpu_cores} -le 8 ] ; then
     jobs=${cpu_cores}
 else
@@ -62,7 +68,7 @@ build_nand_lib()
     echo "build nand library ${NAND_ROOT}/lib"
     if [ -d ${NAND_ROOT}/lib ]; then
         echo "build nand library now"
-        make -C modules/nand/lib clean 2> /dev/null 
+        make -C modules/nand/lib clean 2> /dev/null
         make -C modules/nand/lib lib install
     else
         echo "build nand with existing library"
@@ -182,7 +188,7 @@ clean_modules()
 {
     echo "Cleaning modules"
     make -C modules/example LICHEE_MOD_DIR=${LICHEE_MOD_DIR} LICHEE_KDIR=${LICHEE_KDIR} clean
-    
+
     (
     export LANG=en_US.UTF-8
     unset LANGUAGE
@@ -231,4 +237,3 @@ case "$1" in
         gen_output
         ;;
 esac
-
