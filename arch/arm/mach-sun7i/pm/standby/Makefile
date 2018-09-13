@@ -3,7 +3,7 @@
 INCLUDE   = -I. \
 	-I$(KDIR)/include \
 	-I$(KDIR)/arch/arm/mach-sun7i/include \
-	
+
 STANDBY_OBJ = 	common.o         	\
 		standby.o        	\
 		standby_clock.o  	\
@@ -25,7 +25,7 @@ STANDBY_OBJ = 	common.o         	\
 		./../mem_int.o			\
 		./../mem_timing.o      		\
 		./../mem_divlib.o
-	
+
 SUSPEND_OBJ =	./super/common.o              	\
 		./super/super_tmr.o         	\
 		./super/super_clock.o       	\
@@ -44,8 +44,8 @@ SUSPEND_OBJ =	./super/common.o              	\
 		./../mem_divlibc.o		\
 		./../mem_int.o			\
 		./../pm_debug.o       		\
-		./../mem_timing.o       	        
-	
+		./../mem_timing.o
+
 RESUME1_OBJ =	./super/common.o             \
 		./super/super_twi.o        \
 		./super/super_clock.o      \
@@ -63,8 +63,8 @@ RESUME1_OBJ =	./super/common.o             \
 		./../pm_debug.o       		\
 		./../mem_timing.o       	        \
 		./../mem_divlibc.o		\
-		./../mem_divlib.o	 
-	
+		./../mem_divlib.o
+
 RESUME0_OBJ =	./super/common.o             \
 		./super/super_twi.o        \
 		./../mem_delay.o      \
@@ -80,8 +80,8 @@ RESUME0_OBJ =	./super/common.o             \
 		./../mem_serial.o		\
 		./../mem_printk.o  		\
 		./../mem_divlibc.o		\
-		./../mem_divlib.o	  
-	
+		./../mem_divlib.o
+
 STANDBY_OUPUTFILE = standby
 SUSPEND_OUPUTFILE = suspend
 RESUME1_OUPUTFILE = resume1
@@ -94,8 +94,9 @@ RESUME0_LD_FILE = resume0.xn
 
 CC = $(CROSS_COMPILE)gcc
 
-#CFLAGS = -g -c -nostdlib -march=armv7-a -marm -fno-unwind-tables -fno-asynchronous-unwind-tables -mlittle-endian  --min_array_alignment=4 --no_unaligned_access -O2 
-CFLAGS = -g -c -nostdlib -march=armv7-a -marm -D__STANDBY_MODULE__ -fno-unwind-tables -fno-asynchronous-unwind-tables -mlittle-endian -O0 --min_array_alignment=4 --no_unaligned_access
+#CFLAGS = -g -c -nostdlib -march=armv7-a -marm -fno-unwind-tables -fno-asynchronous-unwind-tables -mlittle-endian  --min_array_alignment=4 --no_unaligned_access -O2
+#CFLAGS = -g -c -nostdlib -march=armv7-a -marm -D__STANDBY_MODULE__ -fno-unwind-tables -fno-asynchronous-unwind-tables -mlittle-endian -O0 --min_array_alignment=4 --no_unaligned_access
+CFLAGS = -g -c -nostdlib -march=armv7-a -marm -D__STANDBY_MODULE__ -fno-unwind-tables -fno-asynchronous-unwind-tables -mlittle-endian -O0
 CFLAGS_DRAM_VADDR = -D DRAM_USE_VA_ADDR
 all: standby suspend resume1 resume0
 
@@ -113,14 +114,14 @@ standby:
 	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) standby_usb.c      -o standby_usb.o
 	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) standby_delay.S    -o standby_delay.o
 	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_delay.S             -o ./../mem_delay.o
-	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../pm_debug.c    			-o ./../pm_debug.o 
-	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_timing.c    		-o ./../mem_timing.o 
+	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../pm_debug.c    			-o ./../pm_debug.o
+	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_timing.c    		-o ./../mem_timing.o
 	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_mmu_pc_asm.S               -o ./../mem_mmu_pc_asm.o
-	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_divlib.S    -o 		./../mem_divlib.o 
-	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_divlibc.c    -o 		./../mem_divlibc.o 
+	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_divlib.S    -o 		./../mem_divlib.o
+	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_divlibc.c    -o 		./../mem_divlibc.o
 	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_int.c    -o 		./../mem_int.o
-	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_printk.c    -o 		./../mem_printk.o 
-	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_serial.c    -o 		./../mem_serial.o 
+	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_printk.c    -o 		./../mem_printk.o
+	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) ./../mem_serial.c    -o 		./../mem_serial.o
 	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) dram/dram.c        -o dram/dram.o
 	$(CC) $(INCLUDE) $(CFLAGS) $(CFLAGS_DRAM_VADDR) dram/dram_init.c   -o dram/dram_init.o
 	$(CROSS_COMPILE)ld -T $(STANDBY_LD_FILE)  -EL  $(STANDBY_OBJ) -o $(STANDBY_OUPUTFILE).elf  -Map $(STANDBY_OUPUTFILE).map
@@ -133,7 +134,7 @@ standby:
 
 	@echo ----------------------------------------
 	@echo well done!
-	
+
 suspend:
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/common.c                    -o ./super/common.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/super_tmr.c               -o ./super/super_tmr.o
@@ -144,18 +145,18 @@ suspend:
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/suspend/suspend.c          -o ./super/suspend/suspend.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./dram/dram.c                 -o ./dram/dram.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./dram/dram_init.c            -o ./dram/dram_init.o
-	
-	$(CC) $(INCLUDE) $(CFLAGS) ./../pm_debug.c    			-o ./../pm_debug.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_timing.c    		-o ./../mem_timing.o 
+
+	$(CC) $(INCLUDE) $(CFLAGS) ./../pm_debug.c    			-o ./../pm_debug.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_timing.c    		-o ./../mem_timing.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_mmu_pc_asm.S               -o ./../mem_mmu_pc_asm.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_mmu_pc.c                   -o ./../mem_mmu_pc.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_cpu.c		       -o ./../mem_cpu.o
-	
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlib.S    -o 		./../mem_divlib.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlibc.c    -o 		./../mem_divlibc.o 
+
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlib.S    -o 		./../mem_divlib.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlibc.c    -o 		./../mem_divlibc.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_int.c    -o 		./../mem_int.o
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_printk.c    -o 		./../mem_printk.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_serial.c    -o 		./../mem_serial.o 
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_printk.c    -o 		./../mem_printk.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_serial.c    -o 		./../mem_serial.o
 
 	$(CROSS_COMPILE)ld -T $(SUSPEND_LD_FILE)  -EL  $(SUSPEND_OBJ) -o $(SUSPEND_OUPUTFILE).elf  -Map $(SUSPEND_OUPUTFILE).map
 	$(CROSS_COMPILE)objdump -D $(SUSPEND_OUPUTFILE).elf > $(SUSPEND_OUPUTFILE).lst
@@ -167,7 +168,7 @@ suspend:
 
 	@echo ----------------------------------------
 	@echo well done!
-	
+
 resume1:
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/common.c                    -o ./super/common.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/super_twi.c               -o ./super/super_twi.o
@@ -175,23 +176,23 @@ resume1:
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/super_clock.c             -o ./super/super_clock.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/super_power.c             -o ./super/super_power.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/super_tmr.c               -o ./super/super_tmr.o
-	
+
 	$(CC) $(INCLUDE) $(CFLAGS) ./dram/dram.c                 -o ./dram/dram.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./dram/dram_init.c            -o ./dram/dram_init.o
-	
+
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/resume/resume1.c        -o ./super/resume/resume1.o
 
-	
+
 	$(CC) $(INCLUDE) $(CFLAGS) ./../pm_debug.c                     -o ./../pm_debug.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_timing.c    		-o ./../mem_timing.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_mmu_pc.c                   -o ./../mem_mmu_pc.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_mmu_pc_asm.S               -o ./../mem_mmu_pc_asm.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_cpu.c		       -o ./../mem_cpu.o
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_serial.c    		-o ./../mem_serial.o 
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_serial.c    		-o ./../mem_serial.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_printk.c    		-o ./../mem_printk.o
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlib.S    -o 		./../mem_divlib.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlibc.c    -o 		./../mem_divlibc.o 
-	
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlib.S    -o 		./../mem_divlib.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlibc.c    -o 		./../mem_divlibc.o
+
 	$(CROSS_COMPILE)ld -T $(RESUME1_LD_FILE)  -EL  $(RESUME1_OBJ) -o $(RESUME1_OUPUTFILE).elf  -Map $(RESUME1_OUPUTFILE).map
 	$(CROSS_COMPILE)objdump -D $(RESUME1_OUPUTFILE).elf > $(RESUME1_OUPUTFILE).lst
 	$(CROSS_COMPILE)objcopy -O binary $(RESUME1_OUPUTFILE).elf $(RESUME1_OUPUTFILE).bin
@@ -209,21 +210,21 @@ resume0:
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_delay.S             -o ./../mem_delay.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/super_clock.c             -o ./super/super_clock.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/resume1_asm.S               -o ./super/resume1_asm.o
-	
+
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/resume/resume0.S        -o ./super/resume/resume0.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/resume/resume_head.c        -o ./super/resume/resume_head.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./super/resume/resume0_c_part.c        -o ./super/resume/resume0_c_part.o
 
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_mmu_pc_asm.S               -o ./../mem_mmu_pc_asm.o
 	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_cpu.c		       -o ./../mem_cpu.o
-	
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlib.S    -o 		./../mem_divlib.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../pm_debug.c    			-o ./../pm_debug.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_timing.c    		-o ./../mem_timing.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlibc.c    -o 		./../mem_divlibc.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_printk.c    -o 		./../mem_printk.o 
-	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_serial.c    -o 		./../mem_serial.o 
-	
+
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlib.S    -o 		./../mem_divlib.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../pm_debug.c    			-o ./../pm_debug.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_timing.c    		-o ./../mem_timing.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_divlibc.c    -o 		./../mem_divlibc.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_printk.c    -o 		./../mem_printk.o
+	$(CC) $(INCLUDE) $(CFLAGS) ./../mem_serial.c    -o 		./../mem_serial.o
+
 	$(CROSS_COMPILE)ld -T $(RESUME0_LD_FILE)  -EL  $(RESUME0_OBJ) -o $(RESUME0_OUPUTFILE).elf  -Map $(RESUME0_OUPUTFILE).map
 	$(CROSS_COMPILE)objdump -D $(RESUME0_OUPUTFILE).elf > $(RESUME0_OUPUTFILE).lst
 	$(CROSS_COMPILE)objcopy -O binary $(RESUME0_OUPUTFILE).elf $(RESUME0_OUPUTFILE).bin
@@ -235,7 +236,6 @@ resume0:
 	@echo ----------------------------------------
 	@echo well done!
 
-	
+
 clean:
 	-rm *.o *.map *.lst *.bin *.elf *.exe dram/*.o
-
